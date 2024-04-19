@@ -1,0 +1,100 @@
+
+.citizen-dashboard {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .citi-span
+  {
+    font-weight: bolder;
+    font-size: larger;
+  }
+  .profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .logout-button {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 90%;
+  }
+  
+  .info-section, .service-menu, .request-history {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+
+  }
+  
+  .info-section h2, .service-menu h2, .request-history h2 {
+    margin-top: 0;
+  }
+  
+  .info-section ul {
+    list-style-type: none;
+    padding: 0;
+ 
+  }
+  
+  .info-section ul li {
+    margin-bottom: 10px;
+   
+    
+  }
+  .citi-para
+  {
+    font-weight: bold;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  }
+  .service-menu button {
+    display: block;
+    width: 70%;
+    padding: 10px 0;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+  }
+  
+  .service-menu button:hover {
+    background-color: #0056b3;
+  }
+  
+  .request-history table {
+    width: 90%;
+    border-collapse: collapse;
+  }
+  
+  .request-history th, .request-history td {
+    padding: 8px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .request-history th {
+    background-color: #f2f2f2;
+  }
+  
+  .request-history tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  .request-history
+  {
+    width: 150%;
+  }

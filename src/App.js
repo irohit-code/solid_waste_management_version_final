@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './Component/JSX/homepage';
+import RegisterPage from './Component/JSX/register';
+import LoginPage from './Component/JSX/loginpage';
+import CitizenDashboard from './Component/JSX/citizenpage';
+import RequestGarbagePage from './Component/JSX/requestgarbage';
 
-function App() {
+
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="app">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
+          <Route path="/request-garbage" element={<RequestGarbagePage />} />
+
+
+
+
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
