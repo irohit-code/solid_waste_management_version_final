@@ -80,6 +80,35 @@ const requestSchema = new mongoose.Schema({
   }
 });
 const Request = mongoose.model('Request', requestSchema);
+
+//HEAD
+const headSchema = new mongoose.Schema({
+  Name: {
+      type: String,
+      required: true
+  },
+  Email: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  Password: {
+      type: String,
+      required: true
+  },
+  ContactNumber: {
+      type: String,
+      required: true,
+      unique: true
+  },
+  Address: {
+      type: String,
+      required: true
+  }
+});
+
+const Head = mongoose.model('Head', headSchema);
+
 //////////////////////////////////////////////////////////////////////////////
 // REGISTER CITIZEN
 
