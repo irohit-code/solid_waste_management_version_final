@@ -9,6 +9,8 @@ import HeadDashboard from './Component/JSX/headpage';
 import StaffRegister from './Component/JSX/staffregister';
 import StaffPage from './Component/JSX/staffpage';
 import AddWorker from './Component/JSX/addworker';
+import WorkerDashboard from './Component/JSX/workerpage';
+import AssignWorkPage from './Component/JSX/assignwork';
 
 
 
@@ -27,11 +29,7 @@ const App = () => {
           <Route path="/staff-register" element={<StaffRegister />} />
           <Route path="/staff-dashboard" element={<StaffPage />} />
           <Route path="/add-worker" element={<AddWorker />} />
-
-
-
-
-
+          <Route path="/worker-dashboard" element={<WorkerDashboard />} />
 
 
 

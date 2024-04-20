@@ -86,6 +86,9 @@ const StaffPage = () => {
     const handleRegisterWorker = () => {
         navigate('/add-worker');
     };
+    const handleAssignWork = () => {
+        navigate('/assign-work');
+    };
 
     const handleClickOutside = (event) => {
         if (tableRef.current && !tableRef.current.contains(event.target)) {
@@ -131,7 +134,7 @@ const StaffPage = () => {
                     <button onClick={handleViewStaff} className="view-button">View Staff</button>
                     <button onClick={handleViewWorker} className="view-button">View Worker</button>
                     <button onClick={handleRegisterWorker} className="view-button">Register New Worker</button>
-                    <button onClick={handleRegisterWorker} className="view-button">Assign Work</button>
+                    <button onClick={handleAssignWork} className="view-button">Assign Work</button>
                 </div>
                 {showCitizenTable && (
                     <div className="table-container citizens-table" ref={tableRef}>

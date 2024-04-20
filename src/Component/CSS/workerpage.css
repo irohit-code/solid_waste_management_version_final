@@ -1,0 +1,68 @@
+.worker-dashboard {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .welcome-message {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .logout-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    margin-top: 10px;
+  }
+  
+  .button-container {
+    margin-top: 20px;
+  }
+  
+  .content-container {
+    margin-top: 20px;
+  }
+  
+  .content-section {
+    margin-bottom: 30px;
+  }
+  
+  .section-heading {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .section-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .section-list {
+    padding-left: 20px;
+  }
+  
+  .section-list li {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  

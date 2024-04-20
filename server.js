@@ -179,6 +179,44 @@ const workerSchema = new mongoose.Schema({
     required: true
   }
 });
+//ASSIGNED WORK 
+
+const assignedWorkSchema = new mongoose.Schema({
+  workerName: {
+    type: String,
+    required: true
+  },
+  workerEmail: {
+    type: String,
+    required: true
+  },
+  workerContact: {
+    type: String,
+    required: true
+  },
+  requestId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Request',
+    required: true
+  },
+  requestAddress: {
+    type: String,
+    required: true
+  },
+  requestTime: {
+    type: Date,
+    default: Date.now,
+    required: true
+  },
+  assignedStatus: {
+    type: String,
+    enum: ['Assigned', 'Not Assigned'],
+    default: 'Assigned',
+    required: true
+  }
+});
+
+const AssignedWork = mongoose.model('AssignedWork', assignedWorkSchema);
 
 const Worker = mongoose.model('Worker', workerSchema);
 
@@ -237,6 +275,9 @@ app.post('/api/login', async (req, res) => {
         break;
       case 'Staff':
         UserModel = Staff;
+        break;
+      case 'Worker':
+        UserModel = Worker;
         break;
 
 
@@ -438,6 +479,23 @@ app.post('/api/add-workers', async (req, res) => {
   } catch (error) {
     console.error('Error adding worker:', error);
     res.status(500).json({ error: 'Failed to add worker' });
+  }
+});
+//GET WORKER NAME CN
+app.get('/api/worker/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const worker = await Worker.findOne({ Email: email });
+    if (!worker) {
+      return res.status(404).json({ error: 'Citizen not found' });
+    }
+    res.json({
+      name: worker.Name,
+      contactNumber: worker.ContactNumber,
+    });
+  } catch (error) {
+    console.error('Error fetching citizen details:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
