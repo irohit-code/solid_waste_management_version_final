@@ -38,6 +38,14 @@ const WorkerDashboard = () => {
         navigate('/');
     };
 
+    const handleViewAssignedWorks = () => {
+        navigate('/view-assigned-work');
+    };
+
+    const handleViewCompletedWorks = () => {
+        navigate('/view-completed-work');
+    };
+
     return (
         <div className="worker-dashboard">
             <div className="header">
@@ -46,13 +54,11 @@ const WorkerDashboard = () => {
             </div>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             <div className="button-container">
-
+                <button className="view-button" onClick={handleViewAssignedWorks}>View Assigned Works</button>
+                <button className="view-button" onClick={handleViewCompletedWorks}>View Completed Works</button>
             </div>
             <div className="content-container">
                 <div className="content-section">
-
-                    
-
                     <h3 className="section-heading">Importance Of Your Role</h3>
                     <p className="section-text">
                         The role of the Solid Waste Management Worker is crucial in maintaining a clean and healthy environment. Proper waste collection and disposal help prevent the spread of diseases, reduce pollution, and conserve natural resources. By collecting waste efficiently and effectively, the worker contributes to the overall sustainability of the community.

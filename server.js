@@ -219,6 +219,54 @@ const assignedWorkSchema = new mongoose.Schema({
   }
 });
 
+// COMPLETED WORKS
+
+const completedWorkSchema = new mongoose.Schema({
+  workerName: {
+      type: String,
+      required: true
+  },
+  contactNumber: {
+      type: String,
+      required: true
+  },
+  requestId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Request',
+      required: true
+  },
+  requestDate: {
+      type: Date,
+      required: true
+  },
+  requestTime: {
+      type: String,
+      required: true
+  },
+  requestAddress: {
+      type: String,
+      required: true
+  },
+  bioWasteKg: {
+      type: Number,
+      required: true
+  },
+  nonBioWasteKg: {
+      type: Number,
+      required: true
+  },
+  totalWasteKg: {
+      type: Number,
+      required: true
+  },
+  completedDate: {
+      type: Date,
+      required: true
+  }
+});
+
+const CompletedWork = mongoose.model('CompletedWork', completedWorkSchema);
+
 const AssignedWork = mongoose.model('AssignedWork', assignedWorkSchema);
 
 const Worker = mongoose.model('Worker', workerSchema);
@@ -550,6 +598,65 @@ app.post('/api/assign-work', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
+// GET ASSIGNED WORK
+
+app.get('/api/get-assigned-work/:workerEmail', async (req, res) => {
+  const { workerEmail } = req.params;
+
+  try {
+      const assignedWork = await AssignedWork.find({ workerEmail });
+
+      if (!assignedWork) {
+          return res.status(404).json({ message: 'Assigned work not found' });
+      }
+
+      res.json(assignedWork);
+  } catch (error) {
+      console.error('Error fetching assigned work:', error);
+      res.status(500).json({ message: 'Error fetching assigned work' });
+  }
+});
+
+app.post('/api/complete-work', async (req, res) => {
+  try {
+    const { requestDate, requestTime } = req.body;
+
+    const existingCompletedWork = await CompletedWork.findOne({ requestDate, requestTime });
+
+    if (existingCompletedWork) {
+      return res.status(400).send('Completing the work is not allowed. Another work has already been completed at this date and time.');
+    }
+
+    const completedWork = new CompletedWork(req.body);
+    await completedWork.save();
+    res.status(201).send(completedWork);
+  } catch (error) {
+    console.error('Error completing work:', error);
+    res.status(500).send('Error completing work');
+  }
+});
+
+
+app.post('/api/update-request-status/:requestTime', async (req, res) => {
+  const { requestTime } = req.params;
+  const { Status } = req.body;
+
+  try {
+    const updatedRequest = await Request.findOneAndUpdate({ Time:requestTime}, { Status }, { new: true });
+
+    if (!updatedRequest) {
+      return res.status(404).json({ message: 'Request not found' });
+    }
+
+    return res.status(200).json(updatedRequest);
+  } catch (error) {
+    console.error('Error updating request status:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 // Start the server
 const PORT = 7014;
 app.listen(PORT, () => {

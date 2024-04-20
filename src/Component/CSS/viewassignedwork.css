@@ -1,0 +1,83 @@
+/* viewassignedwork.css */
+
+/* Assigned Work Table */
+.assigned-work-page {
+    margin: 20px;
+}
+
+.assigned-work-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.assigned-work-error {
+    color: red;
+    font-size: 18px;
+}
+
+.assigned-work-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.table-row:hover {
+    background-color: #f2f2f2;
+}
+
+.table-data {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Complete Work Form */
+.complete-work-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 400px;
+}
+
+.complete-work-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
