@@ -1,0 +1,93 @@
+.staff-page {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: whitesmoke;
+    margin-top: 60px;
+  }
+  
+  .profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-section span {
+    font-size: 1.2rem;
+  }
+  
+  .logout-button {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 20%;
+  }
+  
+  .page-heading {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .head-para {
+    margin-bottom: 20px;
+  }
+  
+  .duties {
+    margin-bottom: 30px;
+  }
+  
+  .duty-heading {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .duty-list {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .view-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .table-container {
+    margin-top: 20px;
+  }
+  
+  .table-heading {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .data-table th {
+    background-color: #f2f2f2;
+  }

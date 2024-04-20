@@ -19,31 +19,31 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 //CITIZEN
 
 const citizenSchema = new mongoose.Schema({
-    Name: {
-      type: String,
-      required: true
-    },
-    Address: {
-      type: String,
-      required: true
-    },
-    ContactNumber: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    Email: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    Password: {
-      type: String,
-      required: true
-    }
-  });
-  
-  const Citizen = mongoose.model('Citizen', citizenSchema);
+  Name: {
+    type: String,
+    required: true
+  },
+  Address: {
+    type: String,
+    required: true
+  },
+  ContactNumber: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Password: {
+    type: String,
+    required: true
+  }
+});
+
+const Citizen = mongoose.model('Citizen', citizenSchema);
 // REQUEST
 const requestSchema = new mongoose.Schema({
   CitizenName: {
@@ -84,28 +84,105 @@ const Request = mongoose.model('Request', requestSchema);
 //HEAD
 const headSchema = new mongoose.Schema({
   Name: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
   Email: {
-      type: String,
-      required: true,
-      unique: true
+    type: String,
+    required: true,
+    unique: true
   },
   Password: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
   ContactNumber: {
-      type: String,
-      required: true,
-      unique: true
+    type: String,
+    required: true,
+    unique: true
   },
   Address: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   }
 });
+
+//STAFF
+
+const staffSchema = new mongoose.Schema({
+  Name: {
+    type: String,
+    required: true
+  },
+  Email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Password: {
+    type: String,
+    required: true
+  },
+  ContactNumber: {
+    type: String,
+    required: true
+  },
+  Gender: {
+    type: String,
+    enum: ['Male', 'Female'],
+    required: true
+  },
+  Age: {
+    type: Number,
+    required: true
+  },
+  Address: {
+    type: String,
+    required: true
+  },
+  WorkingArea: {
+    type: String,
+    required: true
+  }
+});
+
+// WORKER
+
+const workerSchema = new mongoose.Schema({
+  Name: {
+    type: String,
+    required: true
+  },
+  Age: {
+    type: Number,
+    required: true
+  },
+  Email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  Password: {
+    type: String,
+    required: true
+  },
+  ContactNumber: {
+    type: String,
+    required: true
+  },
+  Address: {
+    type: String,
+    required: true
+  },
+  WorkingArea: {
+    type: String,
+    required: true
+  }
+});
+
+const Worker = mongoose.model('Worker', workerSchema);
+
+const Staff = mongoose.model('Staff', staffSchema);
 
 const Head = mongoose.model('Head', headSchema);
 
@@ -113,72 +190,79 @@ const Head = mongoose.model('Head', headSchema);
 // REGISTER CITIZEN
 
 app.post('/api/citizen/register', async (req, res) => {
-    try {
-      const { Name, Address, ContactNumber, Email, Password } = req.body;
-  
-      const existingCitizen = await Citizen.findOne({ $or: [{ Email }, { ContactNumber }] });
-      if (existingCitizen) {
-        return res.status(400).json({ error: 'Email or Contact Number already registered.' });
-      }
-  
-      const newCitizen = new Citizen({
-        Name,
-        Address,
-        ContactNumber,
-        Email,
-        Password
-      });
-  
-      await newCitizen.save();
-  
-      res.status(201).json({ message: 'Registration successful.' });
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'An error occurred while registering citizen.' });
+  try {
+    const { Name, Address, ContactNumber, Email, Password } = req.body;
+
+    const existingCitizen = await Citizen.findOne({ $or: [{ Email }, { ContactNumber }] });
+    if (existingCitizen) {
+      return res.status(400).json({ error: 'Email or Contact Number already registered.' });
     }
-  });
+
+    const newCitizen = new Citizen({
+      Name,
+      Address,
+      ContactNumber,
+      Email,
+      Password
+    });
+
+    await newCitizen.save();
+
+    res.status(201).json({ message: 'Registration successful.' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'An error occurred while registering citizen.' });
+  }
+});
 
 
 // LOGIN //
 
 app.post('/api/login', async (req, res) => {
-    try {
-      const { Email, Password, role } = req.body;
-  
-      if (!Email || !Password) {
-        return res.status(400).json({ error: 'Please provide both email and password' });
-      }
-  
-      let UserModel;
-  
-      switch (role) {
-        case 'Citizen':
-          UserModel = Citizen;
-          break;
-  
-        default:
-          return res.status(400).json({ error: 'Invalid role' });
-      }
-  
-      const user = await UserModel.findOne({ Email, Password });
-  
-      if (user) {
-        return res.status(200).json({ message: 'Login successful' });
-      } else {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-    } catch (error) {
-      console.error('Login Error:', error);
-      return res.status(500).json({ error: 'An error occurred while logging in' });
+  try {
+    const { Email, Password, role } = req.body;
+
+    if (!Email || !Password) {
+      return res.status(400).json({ error: 'Please provide both email and password' });
     }
-  });
+
+    let UserModel;
+
+    switch (role) {
+      case 'Citizen':
+        UserModel = Citizen;
+        break;
+      case 'Head':
+        UserModel = Head;
+        break;
+      case 'Staff':
+        UserModel = Staff;
+        break;
+
+
+      default:
+        return res.status(400).json({ error: 'Invalid role' });
+    }
+
+    const user = await UserModel.findOne({ Email, Password });
+
+    if (user) {
+      return res.status(200).json({ message: 'Login successful' });
+    } else {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+  } catch (error) {
+    console.error('Login Error:', error);
+    return res.status(500).json({ error: 'An error occurred while logging in' });
+  }
+});
 
 //////////////////////////// CITIZEN DASHBOARD
-
+// GET CITIZEN NAME
 app.get('/api/citizen/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    const citizen = await Citizen.findOne({ Email: email }); 
+    const citizen = await Citizen.findOne({ Email: email });
     if (!citizen) {
       return res.status(404).json({ error: 'Citizen not found' });
     }
@@ -196,43 +280,168 @@ app.get('/api/citizen/:email', async (req, res) => {
 //REQUEST GARBAGE
 app.post('/api/request-garbage', async (req, res) => {
   try {
-      const existingRequest = await Request.findOne({ Date: req.body.Date, Time: req.body.Time });
-      if (existingRequest) {
-          return res.status(400).json({ message: 'A request for this date and time already exists.' });
-      }
+    const existingRequest = await Request.findOne({ Date: req.body.Date, Time: req.body.Time });
+    if (existingRequest) {
+      return res.status(400).json({ message: 'A request for this date and time already exists.' });
+    }
 
-      const newRequest = new Request({
-          CitizenName: req.body.CitizenName,
-          ContactNumber: req.body.ContactNumber,
-          Address: req.body.Address,
-          Email: req.body.Email,
-          Date: req.body.Date,
-          Time: req.body.Time,
-          Status: 'Not Collected',
-          AssignedStatus: 'Not Assigned'
-      });
+    const newRequest = new Request({
+      CitizenName: req.body.CitizenName,
+      ContactNumber: req.body.ContactNumber,
+      Address: req.body.Address,
+      Email: req.body.Email,
+      Date: req.body.Date,
+      Time: req.body.Time,
+      Status: 'Not Collected',
+      AssignedStatus: 'Not Assigned'
+    });
 
-      const savedRequest = await newRequest.save();
-      res.status(201).json(savedRequest);
+    const savedRequest = await newRequest.save();
+    res.status(201).json(savedRequest);
   } catch (error) {
-      console.error('Error submitting request:', error);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error('Error submitting request:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 app.get('/api/findrequests/:email', async (req, res) => {
-    try {
-        const { email } = req.params;
-        const requests = await Request.find({ Email: email }).select('Date Time Status AssignedStatus');
-        res.status(200).json(requests);
-    } catch (error) {
-        console.error('Error fetching request history:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
+  try {
+    const { email } = req.params;
+    const requests = await Request.find({ Email: email }).select('Date Time Status AssignedStatus');
+    res.status(200).json(requests);
+  } catch (error) {
+    console.error('Error fetching request history:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
 
 
 ///////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////// HEAD
+//GET HEAD NAME
+app.get('/api/head/:email', async (req, res) => {
+  try {
+    const head = await Head.findOne({ Email: req.params.email });
+    if (head) {
+      res.json(head);
+    } else {
+      res.status(404).json({ message: 'Head not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+//GET CITIZEN
+app.get('/api/citizens', async (req, res) => {
+  try {
+    const citizens = await Citizen.find();
+    res.json(citizens);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+//GET STAFF
+app.get('/api/staff', async (req, res) => {
+  try {
+    const staffMembers = await Staff.find();
+    res.json(staffMembers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+// GET WORKER
+app.get('/api/get-worker', async (req, res) => {
+  try {
+    const workMembers = await Worker.find();
+    res.json(workMembers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// REGISTER STAFF
+
+
+app.post('/api/staff/register', async (req, res) => {
+  const { Name, Email, Password, Gender, Age, Address, WorkingArea, ContactNumber } = req.body;
+
+  try {
+    if (!Name || !Email || !Password || !Gender || !Age || !Address || !WorkingArea || !ContactNumber) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const existingStaff = await Staff.findOne({ Email });
+    if (existingStaff) {
+      return res.status(400).json({ error: 'Email already exists' });
+    }
+
+    const newStaff = new Staff({
+      Name,
+      Email,
+      Password,
+      ContactNumber,
+      Gender,
+      Age,
+      Address,
+      WorkingArea
+    });
+
+    await newStaff.save();
+
+    res.status(201).json({ message: 'Staff registered successfully' });
+  } catch (error) {
+    console.error('Error registering staff:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+///////////////////////////////////////////////////////////////////////////
+
+/////////////////////////// STAFF
+//GET STAFF NAME
+app.get('/api/staff/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const staff = await Staff.findOne({ Email: email });
+    if (!staff) {
+      return res.status(404).json({ error: 'Citizen not found' });
+    }
+    res.json({
+      name: staff.Name,
+      contactNumber: staff.ContactNumber,
+
+    });
+  } catch (error) {
+    console.error('Error fetching citizen details:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+////////////////////////////////// WORKER ////////////////////////////////////
+
+//ADD WORKER
+
+app.post('/api/add-workers', async (req, res) => {
+  try {
+    const { Name, Age, Email, Password, ContactNumber, Address, WorkingArea } = req.body;
+    const worker = new Worker({
+      Name,
+      Age,
+      Email,
+      Password,
+      ContactNumber,
+      Address,
+      WorkingArea
+    });
+    await worker.save();
+    res.status(201).json({ message: 'Worker added successfully' });
+  } catch (error) {
+    console.error('Error adding worker:', error);
+    res.status(500).json({ error: 'Failed to add worker' });
+  }
+});
+
+
 
 // Start the server
 const PORT = 7014;

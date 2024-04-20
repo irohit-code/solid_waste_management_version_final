@@ -5,6 +5,10 @@ import RegisterPage from './Component/JSX/register';
 import LoginPage from './Component/JSX/loginpage';
 import CitizenDashboard from './Component/JSX/citizenpage';
 import RequestGarbagePage from './Component/JSX/requestgarbage';
+import HeadDashboard from './Component/JSX/headpage';
+import StaffRegister from './Component/JSX/staffregister';
+import StaffPage from './Component/JSX/staffpage';
+import AddWorker from './Component/JSX/addworker';
 
 
 
@@ -18,6 +22,15 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/citizen-dashboard" element={<CitizenDashboard />} />
           <Route path="/request-garbage" element={<RequestGarbagePage />} />
+          <Route path="/head-dashboard" element={<HeadDashboard />} />
+          <Route path="/staff-register" element={<StaffRegister />} />
+          <Route path="/staff-register" element={<StaffRegister />} />
+          <Route path="/staff-dashboard" element={<StaffPage />} />
+          <Route path="/add-worker" element={<AddWorker />} />
+
+
+
+
 
 
 
