@@ -204,8 +204,11 @@ const assignedWorkSchema = new mongoose.Schema({
     required: true
   },
   requestTime: {
+    type: String,
+    required: true
+  },
+  requestDate: {
     type: Date,
-    default: Date.now,
     required: true
   },
   assignedStatus: {
@@ -487,7 +490,7 @@ app.get('/api/worker/:email', async (req, res) => {
     const { email } = req.params;
     const worker = await Worker.findOne({ Email: email });
     if (!worker) {
-      return res.status(404).json({ error: 'Citizen not found' });
+      return res.status(404).json({ error: 'Worker not found' });
     }
     res.json({
       name: worker.Name,
@@ -499,8 +502,54 @@ app.get('/api/worker/:email', async (req, res) => {
   }
 });
 
+// GET REQUEST
 
+app.get('/api/get-requests', async (req, res) => {
+  try {
+    const requests = await Request.find();
+    res.json(requests);
+  } catch (error) {
+    console.error('Error fetching requests:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+// ASSIGN WORK
 
+app.post('/api/assign-work', async (req, res) => {
+  try {
+    const { selectedRequests, selectedWorker } = req.body;
+    
+    const worker = await Worker.findById(selectedWorker);
+    if (!worker) {
+      return res.status(400).json({ success: false, message: 'Worker not found' });
+    }
+    
+    const assignedRequests = await Request.find({ _id: { $in: selectedRequests } });
+    if (!assignedRequests.length) {
+      return res.status(400).json({ success: false, message: 'No requests selected' });
+    }
+    
+    const assignedWorkDocs = assignedRequests.map(request => ({
+      workerName: worker.Name,
+      workerEmail: worker.Email,
+      workerContact: worker.ContactNumber,
+      requestId: request._id,
+      requestAddress: request.Address,
+      requestTime: request.Time,
+      requestDate: request.Date,
+      assignedStatus: 'Assigned'
+    }));
+    
+    await AssignedWork.insertMany(assignedWorkDocs);
+
+    await Request.updateMany({ _id: { $in: selectedRequests } }, { AssignedStatus: 'Assigned' });
+    
+    res.status(200).json({ success: true, message: 'Work assigned successfully' });
+  } catch (error) {
+    console.error('Error assigning work:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
 // Start the server
 const PORT = 7014;
 app.listen(PORT, () => {

@@ -119,7 +119,7 @@ const CitizenDashboard = () => {
                             <tbody>
                                 {requests.map(request => (
                                     <tr key={request._id}>
-                                        <td>{request.Date}</td>
+                                        <td>{new Date(request.Date).toLocaleDateString()}</td>
                                         <td>{request.Time}</td>
                                         <td>{request.Status}</td>
                                         <td>{request.AssignedStatus}</td>

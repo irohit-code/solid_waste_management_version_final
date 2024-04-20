@@ -1,0 +1,80 @@
+.assign-work-container {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.assign-work-title {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.assign-work-error {
+  color: #ff0000;
+}
+
+.assign-work-success {
+  color: #00aa00;
+}
+
+.request-list-container, .workers-list-container {
+  margin-bottom: 20px;
+}
+
+.request-list-title, .workers-list-title {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.request-table th, .request-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+.request-table th:last-child, .request-table td:last-child {
+  text-align: center;
+}
+
+.request-table th {
+  background-color: #f0f0f0;
+}
+
+.request-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.workers-list-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 16px;
+}
+
+.assign-work-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.assign-work-button:hover {
+  background-color: #0056b3;
+}
