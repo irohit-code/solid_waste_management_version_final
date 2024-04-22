@@ -53,6 +53,7 @@ const CompleteWorkForm = ({ selectedWork }) => {
         try {
             await axios.post('http://localhost:7014/api/complete-work', formData);
             await axios.post(`http://localhost:7014/api/update-request-status/${formData.requestTime}`, { Status: 'Collected' })
+            
         } catch (error) {
             console.error('Error completing work:', error);
         }
@@ -94,7 +95,6 @@ const CompleteWorkForm = ({ selectedWork }) => {
                     <label htmlFor="nonBioWasteKg">Non-Bio Waste (kg):</label>
                     <input type="number" id="nonBioWasteKg" name="nonBioWasteKg" value={formData.nonBioWasteKg} onChange={handleChange} />
                 </div>
-                {/* Display total waste calculated automatically */}
                 <div className="form-group">
                     <label>Total Waste (kg): {formData.totalWasteKg}</label>
                 </div>
@@ -102,7 +102,6 @@ const CompleteWorkForm = ({ selectedWork }) => {
                     <label htmlFor="completedDate">Completed Date:</label>
                     <input type="date" id="completedDate" name="completedDate" value={formData.completedDate} onChange={handleChange} />
                 </div>
-                {/* Submit button */}
                 <button type="submit">Complete Work</button>
             </form>
         </div>
@@ -120,7 +119,11 @@ const ViewAssignedWork = () => {
         const fetchAssignedWork = async () => {
             try {
                 const response = await axios.get(`http://localhost:7014/api/get-assigned-work/${workerEmail}`);
-                setAssignedWork(response.data);
+                
+                const notCompletedWorks = response.data.filter(work => work.status !== 'Collected');
+                
+                setAssignedWork(notCompletedWorks);
+                setErrorMessage(''); 
             } catch (error) {
                 console.error('Error fetching assigned work:', error);
                 setErrorMessage('Error fetching assigned work');
@@ -138,11 +141,13 @@ const ViewAssignedWork = () => {
             completedDate: new Date().toISOString().split('T')[0],
             totalWasteKg: Number(work.bioWasteKg) + Number(work.nonBioWasteKg)
         });
-
-
     };
 
-
+    const handleWorkCompleted = (completedWorkId) => {
+        // Remove the completed work from the assignedWork state
+        const updatedAssignedWork = assignedWork.filter(work => work._id !== completedWorkId);
+        setAssignedWork(updatedAssignedWork);
+    };
 
     return (
         <div className="assigned-work-page">
@@ -166,7 +171,10 @@ const ViewAssignedWork = () => {
                             <td className="table-data">{new Date(work.requestDate).toLocaleDateString()}</td>
                             <td className="table-data">{work.requestTime}</td>
                             <td className="table-data">
-                                <button onClick={() => handleSelectWork(work)}>Complete Work</button>
+                                <button onClick={() => {
+                                    handleSelectWork(work);
+                                    handleWorkCompleted(work._id); // Remove completed work from state
+                                }}>Complete Work</button>
                             </td>
                         </tr>
                     ))}
@@ -176,5 +184,6 @@ const ViewAssignedWork = () => {
         </div>
     );
 };
+
 
 export default ViewAssignedWork;

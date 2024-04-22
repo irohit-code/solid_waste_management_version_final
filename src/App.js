@@ -12,6 +12,7 @@ import AddWorker from './Component/JSX/addworker';
 import WorkerDashboard from './Component/JSX/workerpage';
 import AssignWorkPage from './Component/JSX/assignwork';
 import ViewAssignedWork from './Component/JSX/viewassignedwork';
+import GetReportPage from './Component/JSX/reportpage';
 
 
 
@@ -33,6 +34,8 @@ const App = () => {
           <Route path="/worker-dashboard" element={<WorkerDashboard />} />
           <Route path="/assign-work" element={<AssignWorkPage />} />
           <Route path="/view-assigned-work" element={<ViewAssignedWork />} />
+          <Route path="/report-page" element={<GetReportPage />} />
+
 
 
 

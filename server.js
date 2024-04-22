@@ -213,8 +213,14 @@ const assignedWorkSchema = new mongoose.Schema({
   },
   assignedStatus: {
     type: String,
-    enum: ['Assigned', 'Not Assigned'],
+    enum: ['Assigned', 'Not Assigned', 'Collected', 'Not Collected'],
     default: 'Assigned',
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['Not Collected', 'Collected'],
+    default: 'Not Collected',
     required: true
   }
 });
@@ -585,7 +591,8 @@ app.post('/api/assign-work', async (req, res) => {
       requestAddress: request.Address,
       requestTime: request.Time,
       requestDate: request.Date,
-      assignedStatus: 'Assigned'
+      assignedStatus: 'Assigned',
+      status : 'Not Collected'
     }));
     
     await AssignedWork.insertMany(assignedWorkDocs);
@@ -617,7 +624,7 @@ app.get('/api/get-assigned-work/:workerEmail', async (req, res) => {
       res.status(500).json({ message: 'Error fetching assigned work' });
   }
 });
-
+// CHECK COMPLETED WORK
 app.post('/api/complete-work', async (req, res) => {
   try {
     const { requestDate, requestTime } = req.body;
@@ -625,7 +632,7 @@ app.post('/api/complete-work', async (req, res) => {
     const existingCompletedWork = await CompletedWork.findOne({ requestDate, requestTime });
 
     if (existingCompletedWork) {
-      return res.status(400).send('Completing the work is not allowed. Another work has already been completed at this date and time.');
+      return res.status(400).json({message: 'Completing the work is not allowed. Another work has already been completed at this date and time.'});
     }
 
     const completedWork = new CompletedWork(req.body);
@@ -637,13 +644,14 @@ app.post('/api/complete-work', async (req, res) => {
   }
 });
 
-
+//UPDATE STATUS OF COMPLETED WORK
 app.post('/api/update-request-status/:requestTime', async (req, res) => {
   const { requestTime } = req.params;
   const { Status } = req.body;
 
   try {
     const updatedRequest = await Request.findOneAndUpdate({ Time:requestTime}, { Status }, { new: true });
+    const updateassing = await AssignedWork.findOneAndUpdate({requestTime:requestTime}, {status:'Collected'} ,{new:true});
 
     if (!updatedRequest) {
       return res.status(404).json({ message: 'Request not found' });
@@ -656,7 +664,45 @@ app.post('/api/update-request-status/:requestTime', async (req, res) => {
   }
 });
 
+//GET WORKERS NAME
 
+app.get('/api/get-workers', async (req, res) => {
+  try {
+    const workers = await CompletedWork.find({}, 'workerName'); 
+
+    res.json(workers);
+  } catch (error) {
+    console.error('Error fetching workers:', error);
+    res.status(500).json({ error: 'An error occurred while fetching workers' });
+  }
+});
+
+app.get('/api/get-report', async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  try {
+    const reportData = await CompletedWork.aggregate([
+      {
+        $match: {
+          completedDate: { $gte: new Date(startDate), $lte: new Date(endDate) }
+        }
+      },
+      {
+        $group: {
+          _id: '$workerName',
+          totalBioWaste: { $sum: '$bioWasteKg' },
+          totalNonBioWaste: { $sum: '$nonBioWasteKg' },
+          totalWaste: { $sum: '$totalWasteKg' }
+        }
+      }
+    ]);
+
+    res.json(reportData);
+  } catch (error) {
+    console.error('Error fetching report data:', error);
+    res.status(500).json({ error: 'Error fetching report data' });
+  }
+});
 // Start the server
 const PORT = 7014;
 app.listen(PORT, () => {
