@@ -15,3 +15,10 @@ Technologies Used
 Frontend: React.js, Axios for HTTP requests, React Router for routing, CSS for styling.
 Backend: Node.js with Express.js for the RESTful API, MongoDB as the database using Mongoose for object modeling.
 
+
+STEPS TO RUN
+************
+1) Just Run server.js using "node server.js" command in VS Code terminal
+
+2) Follow the link that is provided once the server is started.
+
