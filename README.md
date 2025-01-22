@@ -1,7 +1,4 @@
-UPDATED VERSION OF PREVIOUS SOLID WASTE MANAGEMENT
-
-
-Staff Management System
+Solid Waste Management System
 Overview
 This project is a Staff Management System that allows staff members to manage various tasks and information related to their work. It includes features such as viewing citizens' information, registering new workers, managing service requests, and more.
 
