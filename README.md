@@ -19,3 +19,10 @@ STEPS TO RUN
 
 2) Follow the link that is provided once the server is started.
 
+Using MERN Stack
+
+Frontend - React.js
+Backend - Node.js
+Database - MongoDB
+We have used Express.js for API parsing.
+
